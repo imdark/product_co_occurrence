@@ -1,5 +1,6 @@
 import sys
 import argparse
+from collections import namedtuple
 
 def parse_args():
 	parser = argparse.ArgumentParser(description='Find corelated transactions.')
@@ -22,3 +23,10 @@ def parse_args():
 
 args = parse_args()
 print(args.input_path, args.output_path, args.min_support)
+
+ProductsCoOccurrence = namedtuple('products_set', 'co_occurrence_frequency')
+
+MIN_SET_SIZE = 3
+def get_product_cooccurrence():
+	''' pydoc
+	'''
