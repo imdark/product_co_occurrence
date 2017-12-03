@@ -24,9 +24,26 @@ def parse_args():
 args = parse_args()
 print(args.input_path, args.output_path, args.min_support)
 
+
+
 ProductsCoOccurrence = namedtuple('products_set', 'co_occurrence_frequency')
 
+TRANSACTION_SPLITTER = ' '
+
+def read_transactions(input_file):
+	'''
+	'''
+	while input_file.peek():
+		line = input_file.read_line()
+		yield line.split(TRANSACTION_SPLITTER)
+
 MIN_SET_SIZE = 3
-def get_product_cooccurrence():
+
+def get_product_cooccurrence(transactions):
 	''' pydoc
 	'''
+	return [ProductsCoOccurrence(['1'], 1)
+
+
+if __name__ == '__main__':
+	main()
