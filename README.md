@@ -1,5 +1,5 @@
-Referencing algorithems
------------------------
+Super-market frequent item sets
+===============================
 
 HOW TO USE
 ----------
@@ -23,6 +23,16 @@ c. python 3 types
 d. clean up
 e. fp_tree pruning
 f. unit tests
+g. move everything to use yield where possible
+
+
+steps to make FP-growth work:
+-----------------------------
+a. -make sure it generates all permutations- looks like working fine
+b. add frquencies
+c. add conditions for frequencies
+d. add limit on set size
+
 
 
 References
