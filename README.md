@@ -42,3 +42,6 @@ https://dl.acm.org/citation.cfm?doid=342009.335372
 
 Comparing Dataset Characteristics that Favor the, Apriori, Eclat or FP-Growth Frequent Itemset, Mining Algorithms
 https://arxiv.org/pdf/1701.09042.pdf
+
+The FP-Growth Algorithm variaty of oprimiztion
+https://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Frequent_Pattern_Mining/The_FP-Growth_Algorithm

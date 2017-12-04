@@ -1,15 +1,15 @@
-records = [
-    'ABDE',
-    'BCE',
-    'ABDE',
-    'ABCE',
-    'ABCDE',
-    'BCD'
-]
-
 # records = [
-# 	'ABC',
+#     'ABDE',
+#     'BCE',
+#     'ABDE',
+#     'ABCE',
+#     'ABCDE',
+#     'BCD'
 # ]
+
+records = [
+	'ABC',
+]
 
 # records = [
 # 	'AC',
@@ -66,18 +66,15 @@ def get_conditional_paths(tree):
 	return items
 
 def get_frequencies_from_fp_tree(tree, suffix = []):
-	print(tree)
 	item_paths = get_conditional_paths(tree)
     for item, path in item_paths:
-    	# print(item, suffix)
     	if item not in suffix:
             found_set = [item] + suffix
-            yield found_set
+            yield found_set, sum(node.frequency for node in path)
             cond_tree = FPTree()
-            print(list(node.value for node in path))
             cond_tree.add(list(node.value for node in path))
-            for s in get_frequencies_from_fp_tree(cond_tree, found_set):
-            	yield s
+            for record in get_frequencies_from_fp_tree(cond_tree, found_set):
+            	yield record
 
 def build_prefix_tree(sorted_records):
 	prefix_tree = FPTree()
@@ -89,7 +86,6 @@ def build_prefix_tree(sorted_records):
 # calculate frequency
 char_frequency = {}
 
-
 for record in records:
 	for char in record:
 		if char not in char_frequency:
@@ -100,6 +96,6 @@ for record in records:
 sorted_records = [(sorted(record, reverse=True, key=lambda char: char_frequency[char])) for record in records]
 
 root_fp_tree = build_prefix_tree(sorted_records)
-get_conditional_paths(root_fp_tree)
+# get_conditional_paths(root_fp_tree)
 
 list(get_frequencies_from_fp_tree(root_fp_tree, suffix = []))
