@@ -27,7 +27,7 @@ TODO
 1. ~unit tests~
 1. fp_tree pruning
 1. move everything to use yield where possible
-1. input reading fails
+1. ~input reading fails~
 
 
 steps to make FP-growth work:

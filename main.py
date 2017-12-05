@@ -19,39 +19,45 @@ def parse_args():
 	    '-s', '--min-support', type=int, metavar='int', nargs='?', default=4,
 	    help='Minimum sigma, support ratio, times that elements appered togather (must be > 0, default: 4).')
 
+	args = parser.parse_args()
+	return args.input_path, args.output_path, args.min_support
 
-	return parser.parse_args()
 
-
-ProductsCoOccurrence = namedtuple('products_set', 'co_occurrence_frequency')
+Arguments = namedtuple('Arguments', ['input_path', 'output_path', 'min_support'])
+ProductsCoOccurrence = namedtuple('ProductsCoOccurrence', ['products_set', 'co_occurrence_frequency'])
 
 TRANSACTION_SPLITTER = ' '
 
 def read_transactions(input_file):
 	'''
 	'''
+	print('started reading input')
 	line = input_file.readline()
 	while line is not '':
-		yield line.split(TRANSACTION_SPLITTER)
+		# remove break lines
+		yield line.strip().split(TRANSACTION_SPLITTER)
+		line = input_file.readline()
+	print('finished reading input')
+
+
 
 def write_cooccurrences(cooccurrences, output_file):
 	pass
 
 MIN_SET_SIZE = 3
 
-def get_product_cooccurrence(transactions):
+def get_product_cooccurrence(transactions, min_support = 0):
 	''' pydoc
 	'''
-	members_cooccernces = get_members_cooccernces(transactions)
+	members_cooccernces = get_members_cooccernces(transactions, min_support)
 	return members_cooccernces
 	# return [ProductsCoOccurrence(['1'], 1)
 
 def main():
-	# args = parse_args()
-	# print(args.input_path, args.output_path, args.min_support)
-	# transactions = read_transactions(args.input_path)
-	transactions = ["AB", "AC"]
-	product_cooccurrences = get_product_cooccurrence(transactions)
+	input_path, output_path, min_support = parse_args()
+	transactions = read_transactions(input_path)
+	min_support = 10000
+	product_cooccurrences = get_product_cooccurrence(list(transactions), min_support)
 	for product_cooccurrence in product_cooccurrences:
 		print(product_cooccurrence)
 

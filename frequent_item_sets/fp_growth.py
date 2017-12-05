@@ -24,6 +24,7 @@ def get_conditional_pattern_base(fp_tree):
 	'''
 	conditional_pattern_base = []
 	for key, start_node in fp_tree.header.items():
+		print('fp_tree.header.items()', fp_tree.header.items())
 		next_node = start_node
 		curr_paths = []
 		# traverse fp_tree right
@@ -40,7 +41,7 @@ def get_conditional_pattern_base(fp_tree):
 		conditional_pattern_base.append((key, curr_paths))
 	return conditional_pattern_base
 
-def get_members_cooccernces_from_fp_tree(fp_tree, suffix = []):
+def get_members_cooccernces_from_fp_tree(fp_tree, min_support = 0, suffix = []):
 	'''
 	we recursivly create an frequent_pattern_tree per every sku-cooccored-sku combination, 
 	it allows us to return all frequncies
@@ -54,13 +55,14 @@ def get_members_cooccernces_from_fp_tree(fp_tree, suffix = []):
 			for prefix, frequency in conditional_pattern:
 				fp_tree.add(prefix, frequency)
 				curr_sum += frequency
-			yield (suffix + [key], curr_sum)
-			for result in get_members_cooccernces_from_fp_tree(fp_tree, suffix + [key]):
-				yield result
+			if curr_sum >= min_support:
+				yield (suffix + [key], curr_sum)
+				for result in get_members_cooccernces_from_fp_tree(fp_tree, min_support, suffix + [key]):
+					yield result
 
-def get_members_cooccernces(records):
+def get_members_cooccernces(records, min_support = 0):
 	sorted_records = sort_records_by_member_frequency(records)
 	fp_tree = FPTree()
 	for record in sorted_records:
 		fp_tree.add(record)
-	return get_members_cooccernces_from_fp_tree(fp_tree)
+	return get_members_cooccernces_from_fp_tree(fp_tree, min_support)
