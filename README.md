@@ -17,7 +17,9 @@ a. what algorithem to use:
 	2. Eclat algorithm
 	3. FP-growth algorithm
 
-	currently given some experiments FP-growth algorithm seems to run the fastest given the data I tested it with given
+	currently given some experiments FP-growth algorithm seems to run the fastest given the data I tested it with and in general is considered 
+	Best of breed in term of memory performance and otherwise
+	
 b. pydocs
 c. python 3 types
 d. clean up
@@ -29,7 +31,7 @@ g. move everything to use yield where possible
 steps to make FP-growth work:
 -----------------------------
 a. -make sure it generates all permutations- looks like working fine
-b. add frquencies
+b. -add frquencies-
 c. add conditions for frequencies
 d. add limit on set size
 
