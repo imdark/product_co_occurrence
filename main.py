@@ -50,8 +50,11 @@ def get_product_cooccurrence(transactions, min_support = 0):
 	''' pydoc
 	'''
 	members_cooccernces = get_members_cooccernces(transactions, min_support)
-	return members_cooccernces
-	# return [ProductsCoOccurrence(['1'], 1)
+
+	members_cooccernces_of_min_size = \
+		[ProductsCoOccurrence(members_coocernce, frequency) for members_coocernce, frequency in members_cooccernces \
+		if len(members_coocernce) > MIN_SET_SIZE]
+	return members_cooccernces_of_min_size
 
 def main():
 	input_path, output_path, min_support = parse_args()
