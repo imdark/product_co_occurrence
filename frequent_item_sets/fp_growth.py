@@ -24,9 +24,9 @@ def get_conditional_pattern_base(fp_tree):
 	'''
 	conditional_pattern_base = []
 	for key, start_node in fp_tree.header.items():
-		print('fp_tree.header.items()', fp_tree.header.items())
 		next_node = start_node
 		curr_paths = []
+
 		# traverse fp_tree right
 		while next_node is not None:
 			curr_node = next_node.parent
@@ -37,7 +37,7 @@ def get_conditional_pattern_base(fp_tree):
 				curr_node = curr_node.parent
 			path_to_start_node.reverse()
 			curr_paths.append((path_to_start_node, next_node.frequency))
-			next_node = start_node.next
+			next_node = next_node.next
 		conditional_pattern_base.append((key, curr_paths))
 	return conditional_pattern_base
 

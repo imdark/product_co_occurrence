@@ -18,13 +18,15 @@ class FPTree(object):
 		curr_node = self.root
 		for value in values:
 			if value not in curr_node.children:
-				curr_node.children[value] = FPNode(value, frequency)
-				curr_node.children[value].parent = curr_node
+				child_node = FPNode(value, frequency)
+				child_node.parent = curr_node
+
+				# if there is already a node in for this value, connect to the existing node, and create a linked list
 				if value in self.header:
-					curr_node.children[value].next = self.header[value]
-				self.header[value] = curr_node.children[value]
+					child_node.next = self.header[value]
+				self.header[value] = child_node
+				curr_node.children[value] = child_node
 			else:
 				curr_node.children[value].frequency += frequency
 			
 			curr_node = curr_node.children[value]
-		# print('add', values, frequency, self.header['A'].next)

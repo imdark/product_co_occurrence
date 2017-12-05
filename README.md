@@ -26,7 +26,7 @@ TODO
 1. clean up
 1. ~unit tests~
 1. fp_tree pruning
-1. move everything to use yield where possible
+1. move everything to use yield where possible, to reduce memory issues
 1. ~input reading fails~
 
 

@@ -56,7 +56,6 @@ def get_product_cooccurrence(transactions, min_support = 0):
 def main():
 	input_path, output_path, min_support = parse_args()
 	transactions = read_transactions(input_path)
-	min_support = 10000
 	product_cooccurrences = get_product_cooccurrence(list(transactions), min_support)
 	for product_cooccurrence in product_cooccurrences:
 		print(product_cooccurrence)
