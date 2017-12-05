@@ -34,6 +34,9 @@ def read_transactions(input_file):
 	while line is not '':
 		yield line.split(TRANSACTION_SPLITTER)
 
+def write_cooccurrences(cooccurrences, output_file):
+	pass
+
 MIN_SET_SIZE = 3
 
 def get_product_cooccurrence(transactions):

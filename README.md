@@ -7,6 +7,7 @@ HOW TO USE
 1. clone from git
 `git clone https://github.com/imdark/product_co_occurrence.git`
 1. make a virtual env with python 3.3
+1. prepare an input file in the format "<sku 1 id >, <sku 2 id>, …. <sku N id>" called "retail_25k.dat" and that there no file called "out.dat"
 1. run code 'main.py -i retail_25k.dat  -o out.dat'
 1. the results will be written to out.dat
 
