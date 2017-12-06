@@ -6,8 +6,10 @@ HOW TO USE
 
 1. clone from git
 `git clone https://github.com/imdark/product_co_occurrence.git`
-1. make a virtual env with python 3.3
-1. prepare an input file in the format "<sku 1 id >, <sku 2 id>, …. <sku N id>" called "retail_25k.dat" and that there no file called "out.dat"
+1. make a virtual env with python 3.5
+`virtualenv -p python3 envname`
+1. prepare an input file in the format "<sku 1 id >, <sku 2 id>, …. <sku N id>" called "retail_25k.dat" and make sure
+ there no file called "out.dat"
 1. run code 'main.py -i retail_25k.dat  -o out.dat'
 1. the results will be written to out.dat in the format <item set size (N)>, <co-occurrence frequency>, <item 1 id >, <item 2 id>, …. <item N id>
 
@@ -21,6 +23,7 @@ TODO
 	currently given some experiments FP-growth algorithm seems to run the fastest given the data I tested it with and in general is considered 
 	Best of breed in term of memory performance and otherwise
 
+1. verify input file, in currect format 
 1. impove performance
 1. clean up
 1. fp_tree pruning

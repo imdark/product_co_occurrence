@@ -6,7 +6,8 @@ Transaction = namedtuple('Transaction', ['transaction_ids'])
 
 def sort_transactions_by_member_frequency(transactions : List[Transaction]):
 	'''
-	To allow creating the FP Tree in a consistent way from multiple transactions, we sort every transaction by the frequncy of its skus
+	To allow creating the FP Tree in a consistent way from multiple transactions, we sort the skus in every transaction by the frequncy
+	of its appearnce in the entire dataset
 	'''
 	
 	print('started sorting transactions')
@@ -31,7 +32,7 @@ def sort_transactions_by_member_frequency(transactions : List[Transaction]):
 def get_conditional_pattern_base(fp_tree : FPTree):
 	'''
 	For every sku in the tree, we group all the transactions that end with this sku.
-	This allows us to create an fp_tree per sku
+	This allows us to create an fp_tree per sku,
 	'''
 	conditional_pattern_base = []
 	for key, start_node in fp_tree.header.items():
@@ -55,7 +56,9 @@ def get_conditional_pattern_base(fp_tree : FPTree):
 def get_members_cooccernces_from_fp_tree(fp_tree : FPTree, min_support  : int = 0, suffix : List[str] = []):
 	'''
 	we recursivly create an frequent_pattern_tree per every sku-cooccored-sku combination, 
-	it allows us to return all frequncies
+	it allows us to return all frequncies for current pattern.
+	if the current created pattern in the tree is smaller then min_support we dont return it and make no more
+	sub-trees or sub-patterns of it
 	'''
 	conditional_pattern_base = get_conditional_pattern_base(fp_tree)
 
@@ -73,8 +76,8 @@ def get_members_cooccernces_from_fp_tree(fp_tree : FPTree, min_support  : int = 
 
 def get_members_cooccernces(transactions : List[Transaction], min_support : int = 0):
 	'''
-	We create a combined frequnct pattern tree from all the transactions, and then recursively prune the tree
-	creating a pattern for each subtree based on its parent tree
+	We create a combined frequent pattern tree from all the transactions, and then recursively prune the tree
+	while growing a pattern (combination), for each subtree based on its parent we add the node value it started from
 	'''
 	sorted_transactions = sort_transactions_by_member_frequency(transactions)
 	fp_tree = FPTree()
