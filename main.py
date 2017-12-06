@@ -13,7 +13,7 @@ def get_product_cooccurrence(transactions : List[Transaction], min_support : int
 
 	members_cooccernces_of_min_size = \
 		[ProductsCoOccurrence(members_coocernce, frequency) for members_coocernce, frequency in members_cooccernces \
-		if len(members_coocernce) > MIN_SET_SIZE]
+		if len(members_coocernce) >= MIN_SET_SIZE]
 
 	return members_cooccernces_of_min_size
 

@@ -1,9 +1,12 @@
 import unittest
 from frequent_item_sets.fp_growth import *
 from frequent_item_sets.fp_tree import *
+from io import StringIO
+from io_manager import *
+import main
 
 class TestStringMethods(unittest.TestCase):
-	def test_edge_cases(self):
+	def test_members_cooccernces_very_complicated(self):
 		records = [
 			['A','B','D','E'],
 			['B','C','E'],
@@ -96,6 +99,9 @@ class TestStringMethods(unittest.TestCase):
 
 		self.assert_equal_transactions(expected, actual)
 
+	def test_build_tree(self):
+		pass
+
 	def assert_equal_transactions(self, expected, actual):
 		expected_set = set((frozenset(trans), freq) for trans, freq in expected)
 		actual_set = set((frozenset(trans), freq) for trans, freq in actual)
@@ -138,14 +144,76 @@ class TestStringMethods(unittest.TestCase):
 
 		self.assert_equal_transactions(expected, actual)
 
+	def test_get_members_cooccernces_support(self):
+
+		records = [
+			['30','31','32'],
+			['36','37','38','39','40','41','42','43','44','45','46'],
+			['32','41','59','60','61','62'],
+		]
+
+
+		expected = [
+			(['41'], 2), (['32'], 2)
+		]
+
+		actual = list(get_members_cooccernces(records, min_support=2))
+
+		self.assert_equal_transactions(expected, actual)
+
+	def test_get_members_cooccernces_complicated_support(self):
+
+		records = [
+			['A','B','D','E'],
+			['B','C','E'],
+			['A','B','D','E'],
+			['A','B','C','E'],
+			['A','B','C','D','E'],
+			['B','C','D']
+		]
+
+		expected = [
+				(['A','B','D','E'], 3), (['B','A','E'], 4), (['A', 'B', 'D'], 3), (['A', 'D', 'E'], 3), 
+				(['B', 'D', 'E'], 3), (['B', 'C', 'E'], 3),
+				(['A','B'], 4), (['A','D'], 3), (['A','E'], 4), (['B','D'], 4), (['B','E'], 5), (['B','C'], 4), (['D','E'], 3),
+				(['C', 'E'], 3), (['A'], 4), (['B'], 6), (['D'], 4), (['E'], 5), (['C'], 4)]
+		actual = list(get_members_cooccernces(records, min_support=3))
+
+		self.assert_equal_transactions(expected, actual)
+
 
 	def test_read(self):
-		pass
-	def test_write(self):
-		pass
+		input_buffer = StringIO('A B\nB\nB')
+		expected = [['A', 'B'], ['B'], ['B']]
+		actual = list(read_transactions(input_buffer))
+		self.assertEqual(expected, actual)
 
-	def test_get_product_cooccurrence_limited_resulted_size(self):
-		pass
+	def test_write(self):
+		output_buffer = StringIO()
+		co_occurrences = [ProductsCoOccurrence(['A', 'B'], 10), ProductsCoOccurrence(['A'], 1)]
+		write_cooccurrences(co_occurrences, output_buffer)
+		actual = output_buffer.getvalue()
+		expected = '2, 10, A, B\n1, 1, A\n'
+		self.assertEqual(expected, actual)
+
+	def test_get_product_cooccurrence_limited_resulted_size_and_size_gt_3(self):
+		records = [
+			['A','B','D','E'],
+			['B','C','E'],
+			['A','B','D','E'],
+			['A','B','C','E'],
+			['A','B','C','D','E'],
+			['B','C','D']
+		]
+
+		expected = [
+				(['A','B','D','E'], 3), (['B','A','E'], 4), (['A', 'B', 'D'], 3), (['A', 'D', 'E'], 3), 
+				(['B', 'D', 'E'], 3), (['B', 'C', 'E'], 3)
+			]
+
+		actual = list(main.get_product_cooccurrence(records, min_support=3))
+
+		self.assert_equal_transactions(expected, actual)
 
 if __name__ == '__main__':
     unittest.main()
