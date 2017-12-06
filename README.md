@@ -6,33 +6,33 @@ HOW TO USE
 
 1. clone from git
 `git clone https://github.com/imdark/product_co_occurrence.git`
-1. make a virtual env with python 3.5
-`virtualenv -p python3 envname`
+1. cd into the folder you cloned it in
+`cd product_co_occurrence`
+1. make a virtual env with python 3.5 and run it (might change slightly depending on your local setup)
+```
+virtualenv -p python3 envname
+source activate
+```
 1. prepare an input file in the format "<sku 1 id >, <sku 2 id>, …. <sku N id>" called "retail_25k.dat" and make sure
  there no file called "out.dat"
 1. run code 'main.py -i retail_25k.dat  -o out.dat'
 1. the results will be written to out.dat in the format <item set size (N)>, <co-occurrence frequency>, <item 1 id >, <item 2 id>, …. <item N id>
 
-TODO
+Considurations and next steps
 ----
-1. ~what algorithem to use~:
+The original question I had in mind was, what algorithem to use:
 	1. apriori
 	1. Eclat algorithm
 	1. FP-growth algorithm
 
-	currently given some experiments FP-growth algorithm seems to run the fastest given the data I tested it with and in general is considered 
-	Best of breed in term of memory performance and otherwise
+	Currently given some experiments FP-growth algorithm seems to run the fastest given the data I tested it with and in general is considered 
+	Best of Breed in term of memory performance and time
 
+things still left to do
 1. verify input file, in currect format 
-1. impove performance
-1. clean up
+1. profile and impove performance, I believe it could run much faster
 1. fp_tree pruning
 1. see if there is a more efficent way to make the set size limit work
-1. ~pydocs~
-1. ~python 3 types~
-1. ~unit tests~
-1. ~move everything to use yield where possible, to reduce memory issues~
-1. ~input reading fails~
 
 
 Steps to make FP-growth work:
@@ -48,10 +48,12 @@ To run unit tests
 
 To test perfomance
 ------------------
-1. To run profiling:
+*. To run profiling:
 ```python -m cProfile main.py -i retail_25k.dat > out.profile```
 
-1. current slow downs:
+*. it currently takes about 4.5 minutes to process the big retail_25k.dat, does not seem reasonable
+
+*. current slow downs:
 ```
    299024   27.095    0.000   32.429    0.000 fp_growth.py:25(get_conditional_ (might be solvable using set() union set() for suffix)
    2387221    8.595    0.000   14.855    0.000 fp_tree.py:12(__init__)
