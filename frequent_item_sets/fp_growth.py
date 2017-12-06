@@ -1,23 +1,34 @@
+from typing import *
 from frequent_item_sets.fp_tree import FPTree
+from collections import namedtuple
 
-def sort_records_by_member_frequency(records):
-	# calculate frequency per char
-	char_frequency = {}
+Transaction = namedtuple('Transaction', ['transaction_ids'])
 
-	for record in records:
-		for char in record:
-			if char not in char_frequency:
-				char_frequency[char] = 0
-			char_frequency[char] += 1
+def sort_transactions_by_member_frequency(transactions : List[Transaction]):
+	'''
+	To allow creating the FP Tree in a consistent way from multiple transactions, we sort every transaction by the frequncy of its skus
+	'''
+	
+	print('started sorting transactions')
+	# calculate frequency per sku_id
+	sku_id_frequency = {}
+
+	for transaction in transactions:
+		for sku_id in transaction:
+			if sku_id not in sku_id_frequency:
+				sku_id_frequency[sku_id] = 0
+			sku_id_frequency[sku_id] += 1
 
 	# O(number_of_transactions * transactions_length * log(transactions_length))
-	# sort transaction by frequency per char
-	sorted_records = [(sorted(record, reverse=True, key=lambda char: char_frequency[char])) for record in records]
+	# sort transaction by frequency per sku_id
+	sorted_transactions = [(sorted(transaction, reverse=True, key=lambda sku_id: sku_id_frequency[sku_id])) for transaction in transactions]
+	print('finished sorting transactions')
 
-	return sorted_records
+
+	return sorted_transactions
 
 
-def get_conditional_pattern_base(fp_tree):
+def get_conditional_pattern_base(fp_tree : FPTree):
 	'''
 	For every sku in the tree, we group all the transactions that end with this sku.
 	This allows us to create an fp_tree per sku
@@ -41,7 +52,7 @@ def get_conditional_pattern_base(fp_tree):
 		conditional_pattern_base.append((key, curr_paths))
 	return conditional_pattern_base
 
-def get_members_cooccernces_from_fp_tree(fp_tree, min_support = 0, suffix = []):
+def get_members_cooccernces_from_fp_tree(fp_tree : FPTree, min_support  : int = 0, suffix : List[str] = []):
 	'''
 	we recursivly create an frequent_pattern_tree per every sku-cooccored-sku combination, 
 	it allows us to return all frequncies
@@ -60,9 +71,13 @@ def get_members_cooccernces_from_fp_tree(fp_tree, min_support = 0, suffix = []):
 				for result in get_members_cooccernces_from_fp_tree(fp_tree, min_support, suffix + [key]):
 					yield result
 
-def get_members_cooccernces(records, min_support = 0):
-	sorted_records = sort_records_by_member_frequency(records)
+def get_members_cooccernces(transactions : List[Transaction], min_support : int = 0):
+	'''
+	We create a combined frequnct pattern tree from all the transactions, and then recursively prune the tree
+	creating a pattern for each subtree based on its parent tree
+	'''
+	sorted_transactions = sort_transactions_by_member_frequency(transactions)
 	fp_tree = FPTree()
-	for record in sorted_records:
-		fp_tree.add(record)
+	for transaction in sorted_transactions:
+		fp_tree.add(transaction)
 	return get_members_cooccernces_from_fp_tree(fp_tree, min_support)

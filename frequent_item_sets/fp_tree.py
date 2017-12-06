@@ -1,5 +1,7 @@
+from typing import *
+
 class FPNode(object):
-	def __init__(self, value, frequency = 1):
+	def __init__(self, value : str, frequency : int = 1):
 		self.value = value
 		self.children = dict()
 		self.frequency = frequency
@@ -7,11 +9,15 @@ class FPNode(object):
 		self.parent = None
 
 class FPTree(object):
+	'''
+	FP tree is a trie like data stracture containing an extra field for how many times
+	a specific pattern was added to the tree on the node representing the last member of that sequunce 
+	'''
 	def __init__(self):
 		self.root = FPNode(None)
 		self.header = {}
 
-	def add(self, values, frequency = 1):
+	def add(self, values : List[str], frequency : int = 1):
 		'''
 		Add a Transaction to the tree, allows for adding the same transaction multiple times using the frequency parameter
 		'''
