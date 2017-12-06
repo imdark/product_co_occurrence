@@ -51,7 +51,7 @@ To test perfomance
 *. To run profiling:
 ```python -m cProfile main.py -i retail_25k.dat > out.profile```
 
-*. it currently takes about 4.5 minutes to process the big retail_25k.dat, does not seem reasonable
+*. it currently takes about ~4.5~ 3 minutes to process the big retail_25k.dat, does not seem reasonable
 
 *. current slow downs:
 ```

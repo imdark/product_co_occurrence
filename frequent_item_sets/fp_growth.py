@@ -53,7 +53,7 @@ def get_conditional_pattern_base(fp_tree : FPTree):
 		conditional_pattern_base.append((key, curr_paths))
 	return conditional_pattern_base
 
-def get_members_cooccernces_from_fp_tree(fp_tree : FPTree, min_support  : int = 0, suffix : List[str] = []):
+def get_members_cooccernces_from_fp_tree(fp_tree : FPTree, min_support  : int = 0, suffix : List[str] = set()):
 	'''
 	we recursivly create an frequent_pattern_tree per every sku-cooccored-sku combination, 
 	it allows us to return all frequncies for current pattern.
@@ -70,8 +70,8 @@ def get_members_cooccernces_from_fp_tree(fp_tree : FPTree, min_support  : int = 
 				fp_tree.add(prefix, frequency)
 				curr_sum += frequency
 			if curr_sum >= min_support:
-				yield (suffix + [key], curr_sum)
-				for result in get_members_cooccernces_from_fp_tree(fp_tree, min_support, suffix + [key]):
+				yield (suffix | set([key]), curr_sum)
+				for result in get_members_cooccernces_from_fp_tree(fp_tree, min_support, suffix | set([key])):
 					yield result
 
 def get_members_cooccernces(transactions : List[Transaction], min_support : int = 0):
